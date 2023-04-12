@@ -40,7 +40,7 @@ class DpChainConnector extends ConnectorBase {
         super(workerIndex, bcType);
         this.workspaceRoot = path.resolve(ConfigUtil.get(ConfigUtil.keys.Workspace));
         let networkConfig = CaliperUtils.resolvePath(ConfigUtil.get(ConfigUtil.keys.NetworkConfig));
-        this.fiscoBcosSettings = CaliperUtils.parseYaml(networkConfig)['fisco-bcos'];
+        this.dpChainSettings = CaliperUtils.parseYaml(networkConfig)['dp-chain'];
 
         if (this.fiscoBcosSettings.network && this.fiscoBcosSettings.network.authentication) {
             for (let k in this.fiscoBcosSettings.network.authentication) {
