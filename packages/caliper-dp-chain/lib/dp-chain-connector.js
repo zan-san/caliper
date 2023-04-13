@@ -21,7 +21,6 @@ const {
     CaliperUtils,
     ConfigUtil
 } = require('@hyperledger/caliper-core');
-const installSmartContractImpl = require('./installSmartContract');
 const invokeSmartContractImpl = require('./invokeSmartContract');
 const generateRawTransactionImpl = require('./generateRawTransactions');
 const sendRawTransactionImpl = require('./sendRawTransactions');
@@ -32,7 +31,7 @@ const commLogger = CaliperUtils.getLogger('fiscoBcos-connector');
  */
 class DpChainConnector extends ConnectorBase {
     /**
-     * Create a new instance of the {FISCO BCOS} connector class.
+     * Create a new instance of the {dp-chain} connector class.
      * @param {number} workerIndex The zero-based index of the worker who wants to create an adapter instance. -1 for the manager process.
      * @param {string} bcType The target SUT type
      */
@@ -42,17 +41,12 @@ class DpChainConnector extends ConnectorBase {
         let networkConfig = CaliperUtils.resolvePath(ConfigUtil.get(ConfigUtil.keys.NetworkConfig));
         this.dpChainSettings = CaliperUtils.parseYaml(networkConfig)['dp-chain'];
 
-        if (this.fiscoBcosSettings.network && this.fiscoBcosSettings.network.authentication) {
-            for (let k in this.fiscoBcosSettings.network.authentication) {
-                this.fiscoBcosSettings.network.authentication[k] = CaliperUtils.resolvePath(this.fiscoBcosSettings.network.authentication[k]);
-            }
-        }
         this.clientIdx = workerIndex;
         this.context = undefined;
     }
 
     /**
-     * Initialize the {FISCO BCOS} object.
+     * Initialize the {dp-chain} object.
      * @async
      * @return {Promise<object>} The promise for the result of the execution.
      */
@@ -60,19 +54,7 @@ class DpChainConnector extends ConnectorBase {
         return Promise.resolve();
     }
 
-    /**
-     * Deploy the smart contract specified in the network configuration file to all nodes.
-     * @async
-     */
-    async installSmartContract() {
-        const fiscoBcosSettings = this.fiscoBcosSettings;
-        try {
-            await installSmartContractImpl.run(fiscoBcosSettings, this.workspaceRoot);
-        } catch (error) {
-            commLogger.error(`FISCO BCOS smart contract install failed: ${(error.stack ? error.stack : error)}`);
-            throw error;
-        }
-    }
+
 
     /**
      * Get a context for subsequent operations

@@ -22,7 +22,7 @@ const fiscoBcosApi = require('./fiscoBcosApi');
 const assert = require('assert');
 const commLogger = CaliperUtils.getLogger('installSmartContract.js');
 
-module.exports.run = async function (fiscoBcosSettings, workspaceRoot) {
+module.exports.run = async function (fiscoBcosSettings, workspaceRoot) {``
     const fiscoBcosConfig = fiscoBcosSettings.config;
     const account = fiscoBcosConfig.account;
     const privateKey = fiscoBcosConfig.privateKey;

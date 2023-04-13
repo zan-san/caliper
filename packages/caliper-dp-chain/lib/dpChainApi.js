@@ -40,17 +40,11 @@ module.exports.getBlockNumber = async function (networkConfig) {
     let node = selectNode(networkConfig.nodes);
     // Use RPC
     let requestData = {
-        method: 'POST',
-        uri: `http://${node.ip}:${node.rpcPort}`,
+        method: 'GET',
+        uri: `http://${node.ip}:${node.rpcPort}/block/blockNumber`,
         json: true,
-        body: {
-            'jsonrpc': '2.0',
-            'method': 'getBlockNumber',
-            'params': [networkConfig.groupID],
-            'id': 1
-        }
+        body: {}
     };
-
     return requestPromise(requestData);
 };
 
@@ -65,7 +59,7 @@ let initializationPromise = null;
 async function updateCurrentBlockNumber(networkConfig) {
     module.exports.getBlockNumber(networkConfig).then((result) => {
         if (!result.error && result.result) {
-            let blockNumber = parseInt(result.result);
+            let blockNumber = parseInt(result.data);
             if (blockNumber > currentBlockNumber) {
                 if (currentBlockNumber === -1) {
                     initializeBlockNumberEventEmitter.emit('initialized');
@@ -105,85 +99,6 @@ async function getCurrentBlockNumber(networkConfig) {
     assert(currentBlockNumber !== -1, 'Block number is not illegal');
     return currentBlockNumber;
 }
-
-// Deploy solidity smart contract only
-module.exports.deploy = async function (networkConfig, account, privateKey, contractPath) {
-    let contractName = path.basename(contractPath, '.sol');
-
-    // assume the imports are located at the same directory
-    let contractContent = fs.readFileSync(contractPath, 'utf-8');
-
-    const input = {
-        language: 'Solidity',
-        sources: {
-            [contractPath]: {
-                content: contractContent
-            }
-        },
-        settings: {
-            outputSelection: {
-                '*': {
-                    '*': ['evm.bytecode']
-                }
-            }
-        }
-    };
-
-    let outputJson = solc.compileStandard(JSON.stringify(input), pathDeclared => {
-        let importPath = pathDeclared;
-        try {
-            let content = fs.readFileSync(importPath, 'utf-8');
-            return { contents: content };
-        } catch (err) {
-            return { error: err.toString() };
-        }
-    });
-    commLogger.debug(`solc output: ${outputJson}`);
-
-    let output = JSON.parse(outputJson);
-
-    if ('errors' in output) {
-        let errorStr = '';
-
-        for(let error of output.errors) {
-            errorStr = errorStr + error.formattedMessage;
-        }
-        // Signal the error
-        throw new Error(errorStr);
-    }
-
-    // The concatenation may not be necessary if we are certain there will be only one contract
-    let contractBin = '';
-    for (let name in output.contracts[contractPath]) {
-        contractBin = contractBin + output.contracts[contractPath][name].evm.bytecode.object;
-    }
-
-    commLogger.debug(`contract bin: ${contractBin}`);
-
-    let blockNumber = await getCurrentBlockNumber(networkConfig);
-    let groupID = networkConfig.groupID;
-    let signTx = web3Sync.getSignDeployTx(groupID, account, privateKey, contractBin, blockNumber + 500);
-
-    let requestData = {
-        'jsonrpc': '2.0',
-        'method': 'sendRawTransaction',
-        'params': [networkConfig.groupID, signTx],
-        'id': 1
-    };
-
-    let node = selectNode(networkConfig.nodes);
-    let spinner = ora(`Depolying ${contractName}.sol ...`).start();
-    return channelPromise(node, networkConfig.authentication, requestData, networkConfig.timeout).then((result) => {
-        if (result.error) {
-            spinner.fail();
-        }
-        else {
-            spinner.succeed();
-        }
-
-        return result;
-    });
-};
 
 module.exports.call = async function (networkConfig, from, to, func, params) {
     if (!isArray(params)) {
