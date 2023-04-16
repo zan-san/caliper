@@ -100,26 +100,33 @@ async function getCurrentBlockNumber(networkConfig) {
     return currentBlockNumber;
 }
 
-module.exports.call = async function (networkConfig, from, to, func, params) {
-    if (!isArray(params)) {
-        params = [params];
-    }
-
-    let txData = web3Sync.getTxData(func, params);
-    let requestData = {
-        'jsonrpc': '2.0',
-        'method': 'call',
-        'params': [networkConfig.groupID, {
-            'from': from,
-            'to': to,
-            'value': '0x0',
-            'data': txData
-        }],
-        'id': 1
-    };
+module.exports.call = async function (networkConfig, contractName, functionName, args) {
 
     let node = selectNode(networkConfig.nodes);
-    return channelPromise(node, networkConfig.authentication, requestData, networkConfig.timeout);
+
+    let createAccountData = {
+        method: 'POST',
+        uri: `http://${node.ip}:${node.rpcPort}/dper/newAccount`,
+        json: true,
+        body: {}
+    };
+    requestPromise(createAccountData).then(function (body){
+        
+    });
+    let requestData = {
+        method: 'POST',
+        uri: `http://${node.ip}:${node.rpcPort}/dper/softCall`,
+        json: true,
+        body: {
+                'contractName':contractName,
+                'functionName':functionName,
+                'args':args
+        }
+    };
+
+    return requestPromise(requestData);
+    
+
 };
 
 module.exports.generateRawTransaction = async function (networkConfig, account, privateKey, to, func, params) {
@@ -146,8 +153,29 @@ module.exports.sendRawTransaction = async function (networkConfig, tx) {
 };
 
 module.exports.sendTransaction = async function (networkConfig, account, privateKey, to, func, params) {
-    let signTx = await this.generateRawTransaction(networkConfig, account, privateKey, to, func, params);
-    return this.sendRawTransaction(networkConfig, signTx);
+    let node = selectNode(networkConfig.nodes);
+
+    let createAccountData = {
+        method: 'POST',
+        uri: `http://${node.ip}:${node.rpcPort}/dper/newAccount`,
+        json: true,
+        body: {}
+    };
+    requestPromise(createAccountData).then(function (body){
+        
+    });
+    let requestData = {
+        method: 'POST',
+        uri: `http://${node.ip}:${node.rpcPort}/dper/softInvoke`,
+        json: true,
+        body: {
+                'contractName':contractName,
+                'functionName':functionName,
+                'args':args
+        }
+    };
+
+    return requestPromise(requestData);
 };
 
 module.exports.getTxReceipt = async function (networkConfig, txHash) {

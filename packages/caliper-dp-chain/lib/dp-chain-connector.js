@@ -24,7 +24,7 @@ const {
 const invokeSmartContractImpl = require('./invokeSmartContract');
 const generateRawTransactionImpl = require('./generateRawTransactions');
 const sendRawTransactionImpl = require('./sendRawTransactions');
-const commLogger = CaliperUtils.getLogger('fiscoBcos-connector');
+const commLogger = CaliperUtils.getLogger('dp-chain-connector');
 
 /**
  * Extends {BlockchainConnector} for a FISCO BCOS backend.
@@ -79,53 +79,53 @@ class DpChainConnector extends ConnectorBase {
         this.context = undefined;
     }
 
-    /**
-     * Invoke/query the given smart contract according to the specified options. Multiple transactions will be generated according to the length of args.
-     * @param {Object | Array<Object>} requests Array of JSON formatted arguments for transaction(s). Each element contains arguments (including the function name) passing to the smart contract. JSON attribute named transaction_type is used by default to specify the function name. If the attribute does not exist, the first attribute will be used as the function name.
-     * @param {boolean} readOnly Indicates whether the request is a query or not.
-     * @return {Promise<object>} The promise for the result of the execution.
-     */
-    async _sendRequest(requests, readOnly) {
-        /**
-         * requests = [
-         * { contractId: string, args: object},
-         * ...
-         * ]
-         */
-        let promises = [];
+    // /**
+    //  * Invoke/query the given smart contract according to the specified options. Multiple transactions will be generated according to the length of args.
+    //  * @param {Object | Array<Object>} requests Array of JSON formatted arguments for transaction(s). Each element contains arguments (including the function name) passing to the smart contract. JSON attribute named transaction_type is used by default to specify the function name. If the attribute does not exist, the first attribute will be used as the function name.
+    //  * @param {boolean} readOnly Indicates whether the request is a query or not.
+    //  * @return {Promise<object>} The promise for the result of the execution.
+    //  */
+    // async _sendRequest(requests, readOnly) {
+    //     /**
+    //      * requests = [
+    //      * { contractId: string, args: object},
+    //      * ...
+    //      * ]
+    //      */
+    //     let promises = [];
 
-        let requestsArray;
-        if (!Array.isArray(requests)) {
-            requestsArray = [requests];
-        } else {
-            requestsArray = requests;
-        }
+    //     let requestsArray;
+    //     if (!Array.isArray(requests)) {
+    //         requestsArray = [requests];
+    //     } else {
+    //         requestsArray = requests;
+    //     }
 
-        try {
-            requestsArray.forEach((request) => {
-                let fcn = null;
-                let fcArgs = [];
+    //     try {
+    //         requestsArray.forEach((request) => {
+    //             let fcn = null;
+    //             let fcArgs = [];
 
-                for (let key in request.args) {
-                    if (key === 'transaction_type') {
-                        fcn = request.args[key].toString();
-                    } else {
-                        fcArgs.push(request.args[key].toString());
-                    }
-                }
+    //             for (let key in request.args) {
+    //                 if (key === 'transaction_type') {
+    //                     fcn = request.args[key].toString();
+    //                 } else {
+    //                     fcArgs.push(request.args[key].toString());
+    //                 }
+    //             }
 
-                this._onTxsSubmitted(1);
-                promises.push(invokeSmartContractImpl.run(this.fiscoBcosSettings, request.contractId, fcn, fcArgs, this.workspaceRoot, readOnly));
-            });
+    //             this._onTxsSubmitted(1);
+    //             promises.push(invokeSmartContractImpl.run(this.dpChainSettings, request.contractId, fcn, fcArgs, this.workspaceRoot, readOnly));
+    //         });
 
-            const results = await Promise.all(promises);
-            this._onTxsFinished(results);
-            return results;
-        } catch (error) {
-            commLogger.error(`FISCO BCOS smart contract ${readOnly ? 'query': 'invoke'} failed: ${(error.stack ? error.stack : JSON.stringify(error))}`);
-            throw error;
-        }
-    }
+    //         const results = await Promise.all(promises);
+    //         this._onTxsFinished(results);
+    //         return results;
+    //     } catch (error) {
+    //         commLogger.error(`DP CHAIN smart contract ${readOnly ? 'query': 'invoke'} failed: ${(error.stack ? error.stack : JSON.stringify(error))}`);
+    //         throw error;
+    //     }
+    // }
 
     /**
      * Prepare the request for sending.
@@ -137,48 +137,36 @@ class DpChainConnector extends ConnectorBase {
          */
 
         try {
-            let fcn = null;
-            let fcArgs = [];
-
-            for (let key in request.args) {
-                if (key === 'transaction_type') {
-                    fcn = request.args[key].toString();
-                } else {
-                    fcArgs.push(request.args[key].toString());
-                }
-            }
-
-            return invokeSmartContractImpl.run(this.fiscoBcosSettings, request.contractId, fcn, fcArgs,
-                this.workspaceRoot, request.readOnly);
+            return invokeSmartContractImpl.run(this.fiscoBcosSettings, request);
         } catch (error) {
-            commLogger.error(`FISCO BCOS smart contract ${request.readOnly ? 'query': 'invoke'} failed: ${(error.stack ? error.stack : JSON.stringify(error))}`);
+            commLogger.error(`DP CHAIN smart contract ${request.readOnly ? 'query': 'invoke'} failed: ${(error.stack ? error.stack : JSON.stringify(error))}`);
             throw error;
         }
     }
 
-    /**
-     * Generate an raw transaction and store in local file
-     * @param {String} contractID Identity of the contract
-     * @param {Object} arg Arguments of the transaction
-     * @param {String} file File path which will be used to store then transaction
-     * @return {TaskStatus} Indicates whether the transaction is written to the file successfully or not
-     */
-    async generateRawTransaction(contractID, arg, file) {
-        this._onTxsSubmitted(1);
-        const result = await generateRawTransactionImpl.run(this.fiscoBcosSettings, this.workspaceRoot, contractID, arg, file);
-        this._onTxsFinished(result);
-        return result;
-    }
+//     /**
+//      * Generate an raw transaction and store in local file
+//      * @param {String} contractID Identity of the contract
+//      * @param {Object} arg Arguments of the transaction
+//      * @param {String} file File path which will be used to store then transaction
+//      * @return {TaskStatus} Indicates whether the transaction is written to the file successfully or not
+//      */
+//     async generateRawTransaction(contractID, arg, file) {
+//         this._onTxsSubmitted(1);
+//         const result = await generateRawTransactionImpl.run(this.fiscoBcosSettings, this.workspaceRoot, contractID, arg, file);
+//         this._onTxsFinished(result);
+//         return result;
+//     }
 
-    /**
-     * Send raw transactions
-     * @param {Object} context The FISCO BCOS context returned by {getContext}
-     * @param {Array} transactions List of raw transactions
-     * @return {Promise} The promise for the result of the execution
-     */
-    async sendRawTransaction(context, transactions) {
-        return sendRawTransactionImpl.run(this.fiscoBcosSettings, transactions, this._onTxsSubmitted, this._onTxsFinished);
-    }
+//     /**
+//      * Send raw transactions
+//      * @param {Object} context The FISCO BCOS context returned by {getContext}
+//      * @param {Array} transactions List of raw transactions
+//      * @return {Promise} The promise for the result of the execution
+//      */
+//     async sendRawTransaction(context, transactions) {
+//         return sendRawTransactionImpl.run(this.fiscoBcosSettings, transactions, this._onTxsSubmitted, this._onTxsFinished);
+//     }
 }
 
 module.exports = DpChainConnector;

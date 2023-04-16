@@ -18,31 +18,24 @@ const {
     CaliperUtils,
     TxStatus
 } = require('@hyperledger/caliper-core');
-const fiscoBcosApi = require('./fiscoBcosApi');
+const dpChainApi = require('./dpChainApi');
 const { TxErrorEnum, findContractAddress } = require('./common');
 const commLogger = CaliperUtils.getLogger('invokeSmartContract.js');
 
-module.exports.run = async function (fiscoBcosSettings, contractID, fcn, args, workspaceRoot, readOnly = false) {
-    let smartContracts = fiscoBcosSettings.smartContracts;
-    let address = findContractAddress(workspaceRoot, smartContracts, contractID);
-    if (address === null) {
-        throw new Error(`Can't invoke smart contract ${contractID}`);
-    }
+module.exports.run = async function (dpChainSettings, request) {
 
-    const networkConfig = fiscoBcosSettings.network;
-    const account = fiscoBcosSettings.config.account;
+    const networkConfig = dpChainSettings.network;
+    const account = dpChainSettings.config.account;
 
     let invokeStatus = new TxStatus(account);
     invokeStatus.SetFlag(TxErrorEnum.NoError);
     let receipt = null;
-
     try {
 
-        if (readOnly) {
-            receipt = await fiscoBcosApi.call(networkConfig, account, address, fcn, args);
+        if (request.args.readOnly) {
+            receipt = await dpChainApi.call(networkConfig, request.contractName, request.functionName, request.args);
         } else {
-            const privateKey = fiscoBcosSettings.config.privateKey;
-            receipt = await fiscoBcosApi.sendTransaction(networkConfig, account, privateKey, address, fcn, args);
+            receipt = await dpChainApi.sendTransaction(networkConfig, request.contractName, request.functionName, request.args);
         }
 
         invokeStatus.SetID(receipt.result);

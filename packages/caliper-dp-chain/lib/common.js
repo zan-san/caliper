@@ -42,20 +42,7 @@ module.exports.findContractAddress = function(workspaceRoot, smartContracts, con
     }
 
     let contractType = smartContract.language;
-    if (contractType === 'solidity') {
-        let contractPath = path.join(workspaceRoot, smartContract.path);
-        let contractName = path.basename(contractPath, '.sol');
-
-        try {
-            let address = fs.readFileSync(path.join(path.dirname(contractPath), `${contractName}.address`)).toString();
-            return address;
-        } catch (error) {
-            if (error.code === 'ENOENT') {
-                commLogger.error(`Address of smart contract ${smartContract.id} can't be determinied, please install it first!`);
-            }
-            return null;
-        }
-    } else if (contractType === 'precompiled') {
+    if (contractType === 'precompiled') {
         let address = smartContract.address;
         return address;
     } else {
