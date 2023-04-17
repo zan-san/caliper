@@ -77,7 +77,6 @@ sut:
         latest: *besu-latest
 
     dp-chain:
-        1.0.0:
-            
-        latest:
+        0.9.0: &dp-chain-latest            
+        latest: *dp-chain-latest
         
