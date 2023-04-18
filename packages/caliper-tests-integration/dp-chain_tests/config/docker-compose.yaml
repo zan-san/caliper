@@ -4,57 +4,45 @@ services:
   booter:
     image: zansan/dper:0.9
     stdin_open: true
-    ports:
-      - "20130:20130"
     working_dir: /
     volumes:
-      - ./dper_booter:/data
+      - ./dper_booter1:/data
     container_name: booter
     command: /data/perpare.sh
+    network_mode: host
 
   node1:
     image: zansan/dper:0.9
-    ports:
-      - "20131:20131"
     working_dir: /
     volumes:
       - ./dper_dper1:/data
     container_name: node1
     command: /data/perpare.sh
-    depends_on:
-      - "booter"
+    network_mode: host
 
   node2:
     image: zansan/dper:0.9
-    ports:
-      - "20132:20132"
     working_dir: /
     volumes:
       - ./dper_dper2:/data
     container_name: node2
     command: /data/perpare.sh
-      - "node1"
+    network_mode: host
 
   node3:
     image: zansan/dper:0.9
-    ports:
-      - "20133:20133"
     working_dir: /
     volumes:
       - ./dper_dper3:/data
     container_name: node3
     command: /data/perpare.sh
-    depends_on:
-      - "node2"
-  
+    network_mode: host
+
   node4:
     image: zansan/dper:0.9
-    ports:
-      - "20134:20134"
     working_dir: /
     volumes:
       - ./dper_dper4:/data
     container_name: node4
     command: /data/perpare.sh
-    depends_on:
-      - "node3"
+    network_mode: host

@@ -4,14 +4,15 @@
 "BootstrapNodesFilePath": "./booters/booter.txt",
 "CentralConfigMode": false,
 "ContractEngine": "DEMO_CONTRACT_MIX123",
-"DperKeyAddress": "3fa6685a65cb24b3d43586b032f6c5a618ca975a",
+"DperKeyAddress": "fb1bd3eef259359d1759ad5f16ae884b782cf0b9",
+"DperPrivateKey": "",
 "DperRole": "Follower",
 "ListenAddress": "127.0.0.1:20133",
 "MaxPeerNum": 10,
-"MemoryDBMode": true,
+"MemoryDBMode": false,
 "NATKind": "Any",
-"NewAddressMode": true,
+"NewAddressMode": false,
 "ServerName": "dper",
 "StorageDBPath": "./database/storage",
-"SubNetName": "net1"
+"SubNetName": "net0"
 }
