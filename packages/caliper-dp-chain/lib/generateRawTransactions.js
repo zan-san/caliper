@@ -18,7 +18,7 @@ const fs = require('fs');
 const { CaliperUtils, TxStatus } = require('@hyperledger/caliper-core');
 const { TxErrorEnum, findContractAddress } = require('./common');
 const uuid = require('uuid/v4');
-const fiscoBcosApi = require('./fiscoBcosApi');
+const dpChainApi = require('./dpChainApi');
 const commLogger = CaliperUtils.getLogger('generateRawTransactions.js');
 
 module.exports.run = async function (fiscoBcosSettings, workspaceRoot, contractID, arg, file) {
@@ -41,7 +41,7 @@ module.exports.run = async function (fiscoBcosSettings, workspaceRoot, contractI
             }
         }
 
-        let tx = await fiscoBcosApi.generateRawTransaction(network,
+        let tx = await dpChainApi.generateRawTransaction(network,
             account,
             privateKey,
             address,

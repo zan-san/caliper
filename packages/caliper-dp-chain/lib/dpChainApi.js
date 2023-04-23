@@ -24,7 +24,7 @@ const channelPromise = require('./channelPromise');
 const requestPromise = require('request-promise');
 const assert = require('assert');
 const events = require('events');
-const commLogger = CaliperUtils.getLogger('fiscoBcosApi.js');
+const commLogger = CaliperUtils.getLogger('dpChainApi.js');
 const solc = require('solc');
 
 /**

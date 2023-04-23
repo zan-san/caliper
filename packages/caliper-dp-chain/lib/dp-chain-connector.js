@@ -54,7 +54,19 @@ class DpChainConnector extends ConnectorBase {
         return Promise.resolve();
     }
 
-
+    /**
+     * Deploy the smart contract specified in the network configuration file to all nodes.
+     * @async
+     */
+    async installSmartContract() {
+        const dpChainSettings  = this.dpChainSettings ;
+        try {
+            
+        } catch (error) {
+            commLogger.error(`FISCO BCOS smart contract install failed: ${(error.stack ? error.stack : error)}`);
+            throw error;
+        }
+    }
 
     /**
      * Get a context for subsequent operations
@@ -137,7 +149,7 @@ class DpChainConnector extends ConnectorBase {
          */
 
         try {
-            return invokeSmartContractImpl.run(this.fiscoBcosSettings, request);
+            return invokeSmartContractImpl.run(this.dpChainSettings , request);
         } catch (error) {
             commLogger.error(`DP CHAIN smart contract ${request.readOnly ? 'query': 'invoke'} failed: ${(error.stack ? error.stack : JSON.stringify(error))}`);
             throw error;

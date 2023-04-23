@@ -18,7 +18,7 @@ const CaliperUtils = require('@hyperledger/caliper-core').CaliperUtils;
 const isArray = require('isarray');
 const fs = require('fs-extra');
 const path = require('path');
-const fiscoBcosApi = require('./fiscoBcosApi');
+const dpChainApi = require('./dpChainApi');
 const assert = require('assert');
 const commLogger = CaliperUtils.getLogger('installSmartContract.js');
 
@@ -42,7 +42,7 @@ module.exports.run = async function (fiscoBcosSettings, workspaceRoot) {``
         if (contractType === 'solidity') {
             let contractPath = path.join(workspaceRoot, smartContract.path);
             try {
-                let deployPromise = fiscoBcosApi.deploy(networkConfig, account, privateKey, contractPath);
+                let deployPromise = dpChainApi.deploy(networkConfig, account, privateKey, contractPath);
 
                 deployPromise.then(function (body) {
                     let result = JSON.parse(JSON.stringify(body));

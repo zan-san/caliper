@@ -62,7 +62,7 @@ fi
 # workdir: packages/caliper_cli
 # node caliper.js bind --caliper-bind-sut dp-chain:latest --caliper-bind-cwd ./../caliper-dp-chain/ 
 
-# export CALIPER_PROJECTCONFIG=~/caliper/packages/caliper-test-integration/dp-chain_tests/caliper.yaml
+
 
 
 node caliper.js launch manager \

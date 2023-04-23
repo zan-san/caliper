@@ -36,6 +36,7 @@
         "@hyperledger/caliper-ethereum": "0.4.2",
         "@hyperledger/caliper-fabric": "0.4.2",
         "@hyperledger/caliper-fisco-bcos": "0.4.2",
+        "@zan-san/caliper-dp-chain": "0.4.2",
         "yeoman-generator": "4.7.2",
         "yosay": "^2.0.1"
     },

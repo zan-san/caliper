@@ -1,5 +1,5 @@
 {
-    "name": "@hyperledger/caliper-dp-chain",
+    "name": "@zan-san/caliper-dp-chain",
     "version": "0.4.2",
     "description": "dpchain connector for Caliper, in development",
     "repository": {

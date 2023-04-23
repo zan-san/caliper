@@ -17,7 +17,7 @@
 const { CaliperUtils, TxStatus } = require('@hyperledger/caliper-core');
 const { TxErrorEnum } = require('./common');
 const uuid = require('uuid/v4');
-const fiscoBcosApi = require('./fiscoBcosApi');
+const dpChainApi = require('./dpChainApi');
 const commLogger = CaliperUtils.getLogger('generateRawTransactions.js');
 
 module.exports.run = async function (fiscoBcosSettings, transactions, onSubmitted, onFinished) {
@@ -28,7 +28,7 @@ module.exports.run = async function (fiscoBcosSettings, transactions, onSubmitte
         let invokeStatus = new TxStatus(uuid());
 
         onSubmitted(1);
-        promises.push(fiscoBcosApi.sendRawTransaction(network, transaction).then(receipt => {
+        promises.push(dpChainApi.sendRawTransaction(network, transaction).then(receipt => {
             invokeStatus.SetFlag(TxErrorEnum.NoError);
             invokeStatus.SetResult(receipt.result);
             invokeStatus.SetVerification(true);
