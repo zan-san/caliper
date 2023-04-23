@@ -59,3 +59,14 @@ if [[ ${rc} != 0 ]]; then
     echo "Failed CI step 3";
     exit ${rc};
 fi
+# workdir: packages/caliper_cli
+# node caliper.js bind --caliper-bind-sut dp-chain:latest --caliper-bind-cwd ./../caliper-dp-chain/ 
+
+# export CALIPER_PROJECTCONFIG=~/caliper/packages/caliper-test-integration/dp-chain_tests/caliper.yaml
+
+
+node caliper.js launch manager \
+--caliper-workspace ~/caliper/packages/caliper-tests-integration/dp-chain_tests \
+--caliper-benchconfig ~/caliper/packages/caliper-tests-integration/dp-chain_tests/benchconfig.yaml \
+--caliper-networkconfig ~/caliper/packages/caliper-tests-integration/dp-chain_tests/networkconfig.json
+
