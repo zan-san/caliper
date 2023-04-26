@@ -19,12 +19,12 @@ test:
         number: 2
     rounds:
     - label: set
-      txNumber: 10
-      rateControl: { type: 'fixed-rate', opts: { tps: 2 } }
+      txNumber: 5
+      rateControl: { type: 'fixed-rate', opts: { tps: 1 } }
       workload:
         module: ./set.js
     - label: get
-      txNumber: 10
+      txNumber: 5
       rateControl: { type: 'linear-rate', opts: { startingTps: 2, finishingTps: 6 } }
       workload:
         module: ./get.js

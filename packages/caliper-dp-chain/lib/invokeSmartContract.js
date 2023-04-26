@@ -23,7 +23,7 @@ const { TxErrorEnum, findContractAddress } = require('./common');
 const commLogger = CaliperUtils.getLogger('invokeSmartContract.js');
 
 module.exports.run = async function (dpChainSettings, request) {
-
+    
     const networkConfig = dpChainSettings.network;
     const account = dpChainSettings.config.account;
 
@@ -37,20 +37,21 @@ module.exports.run = async function (dpChainSettings, request) {
         } else {
             receipt = await dpChainApi.sendTransaction(networkConfig, request.contractName, request.functionName, request.args);
         }
-
-        invokeStatus.SetID(receipt.result);
+        receipt = JSON.parse(receipt)
+        invokeStatus.SetID(1);
         invokeStatus.SetResult(receipt);
         invokeStatus.SetVerification(true);
-        if (receipt.error === undefined && (receipt.status === '0x0' || (receipt.result && receipt.result.status === '0x0'))) {
+        
+        if (receipt.error === undefined && receipt.code === 200 ) {
             invokeStatus.SetStatusSuccess();
         } else {
-            commLogger.error('Failed to invoke smart contract: ' + JSON.stringify(receipt));
+            commLogger.error('Failed to invoke contract: ' + JSON.stringify(receipt));
             invokeStatus.SetStatusFail();
         }
 
         return invokeStatus;
     } catch (error) {
-        commLogger.error(`Failed to invoke smart contract ${contractID}: ${JSON.stringify(error)}`);
+        commLogger.error(`Failed to invoke smart contract ${request.functionName}: ${JSON.stringify(error)}`);
         throw error;
     }
 };

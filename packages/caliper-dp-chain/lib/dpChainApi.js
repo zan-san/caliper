@@ -103,20 +103,23 @@ async function getCurrentBlockNumber(networkConfig) {
 module.exports.call = async function (networkConfig, contractName, functionName, args) {
 
     let node = selectNode(networkConfig.nodes);
-
+    
     let createAccountData = {
         method: 'POST',
         uri: `http://${node.ip}:${node.rpcPort}/dper/newAccount`,
-        json: true,
-        body: {}
+        json: false,
+        body: {
+            "tmp":"tmp"
+        }
     };
-    requestPromise(createAccountData).then(function (body){
-        
+
+    await requestPromise(createAccountData).then(function (body){
     });
+
     let requestData = {
         method: 'POST',
         uri: `http://${node.ip}:${node.rpcPort}/dper/softCall`,
-        json: true,
+        json: false,
         body: {
                 'contractName':contractName,
                 'functionName':functionName,
@@ -152,27 +155,26 @@ module.exports.sendRawTransaction = async function (networkConfig, tx) {
     return channelPromise(node, networkConfig.authentication, requestData, networkConfig.timeout);
 };
 
-module.exports.sendTransaction = async function (networkConfig, account, privateKey, to, func, params) {
+module.exports.sendTransaction = async function (networkConfig, contractName, functionName, args) {
     let node = selectNode(networkConfig.nodes);
-
     let createAccountData = {
         method: 'POST',
         uri: `http://${node.ip}:${node.rpcPort}/dper/newAccount`,
-        json: true,
-        body: {}
+        form: {
+        },
+        headers:{}
     };
-    requestPromise(createAccountData).then(function (body){
-        
+    await requestPromise(createAccountData).then(function (body){
     });
     let requestData = {
         method: 'POST',
         uri: `http://${node.ip}:${node.rpcPort}/dper/softInvoke`,
-        json: true,
-        body: {
+        form: {
                 'contractName':contractName,
                 'functionName':functionName,
                 'args':args
-        }
+        },
+        headers:{}
     };
 
     return requestPromise(requestData);
