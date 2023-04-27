@@ -24,7 +24,7 @@ test:
       workload:
         module: ./set.js
     - label: get
-      txNumber: 5
-      rateControl: { type: 'linear-rate', opts: { startingTps: 2, finishingTps: 6 } }
+      txNumber: 10000
+      rateControl: { type: 'linear-rate', opts: { startingTps: 50, finishingTps: 500 } }
       workload:
         module: ./get.js

@@ -102,19 +102,7 @@ async function getCurrentBlockNumber(networkConfig) {
 
 module.exports.call = async function (networkConfig, contractName, functionName, args) {
 
-    let node = selectNode(networkConfig.nodes);
-    
-    let createAccountData = {
-        method: 'POST',
-        uri: `http://${node.ip}:${node.rpcPort}/dper/newAccount`,
-        json: false,
-        body: {
-            "tmp":"tmp"
-        }
-    };
-
-    await requestPromise(createAccountData).then(function (body){
-    });
+    let node = selectNode(networkConfig.nodes);    
 
     let requestData = {
         method: 'POST',
@@ -156,16 +144,7 @@ module.exports.sendRawTransaction = async function (networkConfig, tx) {
 };
 
 module.exports.sendTransaction = async function (networkConfig, contractName, functionName, args) {
-    let node = selectNode(networkConfig.nodes);
-    let createAccountData = {
-        method: 'POST',
-        uri: `http://${node.ip}:${node.rpcPort}/dper/newAccount`,
-        form: {
-        },
-        headers:{}
-    };
-    await requestPromise(createAccountData).then(function (body){
-    });
+    let node = selectNode(networkConfig.nodes);  
     let requestData = {
         method: 'POST',
         uri: `http://${node.ip}:${node.rpcPort}/dper/softInvoke`,

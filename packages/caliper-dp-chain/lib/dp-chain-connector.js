@@ -25,7 +25,7 @@ const invokeSmartContractImpl = require('./invokeSmartContract');
 const generateRawTransactionImpl = require('./generateRawTransactions');
 const sendRawTransactionImpl = require('./sendRawTransactions');
 const commLogger = CaliperUtils.getLogger('dp-chain-connector');
-
+const requestPromise = require('request-promise');
 /**
  * Extends {BlockchainConnector} for a FISCO BCOS backend.
  */
@@ -51,6 +51,21 @@ class DpChainConnector extends ConnectorBase {
      * @return {Promise<object>} The promise for the result of the execution.
      */
     async init() {
+        let nodes = this.dpChainSettings.network.nodes
+        for (let i=0;i<nodes.length;i++){
+            let node = nodes[i]
+            let createAccountData = {
+                method: 'POST',
+                uri: `http://${node.ip}:${node.rpcPort}/dper/newAccount`,
+                form: {
+                },
+                headers:{}
+            };
+            await requestPromise(createAccountData).then(function (body){
+                commLogger.error('init' + body);
+            });            
+        }
+
         return Promise.resolve();
     }
 
