@@ -63,7 +63,16 @@ class DpChainConnector extends ConnectorBase {
             };
             await requestPromise(createAccountData).then(function (body){
                 commLogger.error('init' + body);
-            });            
+            });
+            let txCheckData = {
+                method: 'POST',
+                uri: `http://${node.ip}:${node.rpcPort}/dper/txCheck`,
+                form: {
+                    mode:'on'
+                },
+                headers:{}
+            };
+            await requestPromise(txCheckData);           
         }
 
         return Promise.resolve();

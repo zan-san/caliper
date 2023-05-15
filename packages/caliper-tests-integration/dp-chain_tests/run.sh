@@ -70,3 +70,8 @@ node caliper.js launch manager \
 --caliper-benchconfig ~/caliper/packages/caliper-tests-integration/dp-chain_tests/benchconfig.yaml \
 --caliper-networkconfig ~/caliper/packages/caliper-tests-integration/dp-chain_tests/networkconfig.json
 
+
+node caliper.js launch manager \
+--caliper-workspace ~/caliper/packages/caliper-tests-integration/ethereum_tests \
+--caliper-benchconfig ~/caliper/packages/caliper-tests-integration/ethereum_tests/benchconfig.yaml \
+--caliper-networkconfig ~/caliper/packages/caliper-tests-integration/ethereum_tests/networkconfig.json

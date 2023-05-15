@@ -107,12 +107,12 @@ module.exports.call = async function (networkConfig, contractName, functionName,
     let requestData = {
         method: 'POST',
         uri: `http://${node.ip}:${node.rpcPort}/dper/softCall`,
-        json: false,
-        body: {
-                'contractName':contractName,
-                'functionName':functionName,
-                'args':args
-        }
+        form: {
+            'contractName':contractName,
+            'functionName':functionName,
+            'args':args
+        },
+        headers:{}
     };
 
     return requestPromise(requestData);
@@ -149,9 +149,9 @@ module.exports.sendTransaction = async function (networkConfig, contractName, fu
         method: 'POST',
         uri: `http://${node.ip}:${node.rpcPort}/dper/softInvoke`,
         form: {
-                'contractName':contractName,
-                'functionName':functionName,
-                'args':args
+            'contractName':contractName,
+            'functionName':functionName,
+            'args':args
         },
         headers:{}
     };

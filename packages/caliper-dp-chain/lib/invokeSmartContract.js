@@ -32,7 +32,7 @@ module.exports.run = async function (dpChainSettings, request) {
     let receipt = null;
     try {
 
-        if (request.args.readOnly) {
+        if (request.readOnly) {
             receipt = await dpChainApi.call(networkConfig, request.contractName, request.functionName, request.args);
         } else {
             receipt = await dpChainApi.sendTransaction(networkConfig, request.contractName, request.functionName, request.args);
@@ -43,6 +43,7 @@ module.exports.run = async function (dpChainSettings, request) {
         invokeStatus.SetVerification(true);
         
         if (receipt.error === undefined && receipt.code === 200 ) {
+            commLogger.error('invoke contract: ' + JSON.stringify(receipt)+ JSON.stringify(request));
             invokeStatus.SetStatusSuccess();
         } else {
             commLogger.error('Failed to invoke contract: ' + JSON.stringify(receipt));

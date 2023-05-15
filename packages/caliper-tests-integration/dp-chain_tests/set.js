@@ -25,10 +25,12 @@ class HelloSetWorkload extends WorkloadModuleBase {
      * @return {Promise<TxStatus[]>}
      */
     async submitTransaction() {
+        let num = Math.floor(Math.random() * 100);
+        let payload = "zansan"+num+" han"+num;
         const args = {
             contractName: 'DEMO1',
             functionName: 'set',
-            args: 'zansan handesome',
+            args: payload,
             readOnly: false
         };
         await this.sutAdapter.sendRequests(args);
