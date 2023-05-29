@@ -16,15 +16,15 @@
 test:
     workers:
         type: local
-        number: 2
+        number: 16
     rounds:
     - label: set
-      txNumber: 10000
-      rateControl: { type: 'fixed-rate', opts: { tps: 2000 } }
+      txNumber: 100000
+      rateControl: { type: 'fixed-rate', opts: { tps: 1500 } }
       workload:
         module: ./set.js
     - label: get
-      txNumber: 1000
-      rateControl: { type: 'linear-rate', opts: { startingTps: 100, finishingTps: 200 } }
+      txNumber: 100000
+      rateControl: { type: 'linear-rate', opts: { startingTps: 10000, finishingTps: 11000 } }
       workload:
         module: ./get.js

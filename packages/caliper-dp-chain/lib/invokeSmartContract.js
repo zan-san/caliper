@@ -43,7 +43,7 @@ module.exports.run = async function (dpChainSettings, request) {
         invokeStatus.SetVerification(true);
         
         if (receipt.error === undefined && receipt.code === 200 ) {
-            commLogger.error('invoke contract: ' + JSON.stringify(receipt)+ JSON.stringify(request));
+            //commLogger.error('invoke contract: ' + JSON.stringify(receipt)+ JSON.stringify(request));
             invokeStatus.SetStatusSuccess();
         } else {
             commLogger.error('Failed to invoke contract: ' + JSON.stringify(receipt));

@@ -61,9 +61,9 @@ if [[ ${rc} != 0 ]]; then
 fi
 # workdir: packages/caliper_cli
 # node caliper.js bind --caliper-bind-sut dp-chain:latest --caliper-bind-cwd ./../caliper-dp-chain/ 
-
-
-
+# node caliper.js bind --caliper-bind-sut fisco-bcos:latest --caliper-bind-cwd ./../caliper-fisco-bcos/ 
+# node caliper.js bind --caliper-bind-sut fabric:latest --caliper-bind-cwd ./../caliper-fabric/ 
+# node caliper.js bind --caliper-bind-sut ethereum:latest --caliper-bind-cwd ./../caliper-ethereum/
 
 node caliper.js launch manager \
 --caliper-workspace ~/caliper/packages/caliper-tests-integration/dp-chain_tests \
@@ -75,3 +75,13 @@ node caliper.js launch manager \
 --caliper-workspace ~/caliper/packages/caliper-tests-integration/ethereum_tests \
 --caliper-benchconfig ~/caliper/packages/caliper-tests-integration/ethereum_tests/benchconfig.yaml \
 --caliper-networkconfig ~/caliper/packages/caliper-tests-integration/ethereum_tests/networkconfig.json
+
+node caliper.js launch manager \
+--caliper-workspace ~/caliper/packages/caliper-tests-integration/fisco-bcos_tests \
+--caliper-benchconfig ~/caliper/packages/caliper-tests-integration/fisco-bcos_tests/benchconfig.yaml \
+--caliper-networkconfig ~/caliper/packages/caliper-tests-integration/fisco-bcos_tests/networkconfig.json
+
+node caliper.js launch manager \
+--caliper-workspace ~/caliper/packages/caliper-tests-integration/fabric_docker_local_tests \
+--caliper-benchconfig ~/caliper/packages/caliper-tests-integration/fabric_docker_local_tests/benchconfig.yaml \
+--caliper-networkconfig ~/caliper/packages/caliper-tests-integration/fabric_docker_local_tests/networkconfig.yaml
