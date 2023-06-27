@@ -85,3 +85,10 @@ node caliper.js launch manager \
 --caliper-workspace ~/caliper/packages/caliper-tests-integration/fabric_docker_local_tests \
 --caliper-benchconfig ~/caliper/packages/caliper-tests-integration/fabric_docker_local_tests/benchconfig.yaml \
 --caliper-networkconfig ~/caliper/packages/caliper-tests-integration/fabric_docker_local_tests/networkconfig.yaml
+
+
+
+npx caliper launch manager \
+--caliper-workspace fabric_4peer_network \
+--caliper-benchconfig caliper_config/config.yaml \
+--caliper-networkconfig caliper_config/network.yaml 

@@ -16,15 +16,35 @@
 test:
     workers:
         type: local
-        number: 16
+        number: 1
     rounds:
     - label: set
-      txNumber: 100000
+      txNumber: 10000
       rateControl: { type: 'fixed-rate', opts: { tps: 10000 } }
       workload:
         module: ./set.js
     - label: get
-      txNumber: 1000000
+      txNumber: 100000
+      rateControl: { type: 'linear-rate', opts: { startingTps: 30000, finishingTps: 40000 } }
+      workload:
+        module: ./get.js
+    - label: add
+      txNumber: 100000
+      rateControl: { type: 'linear-rate', opts: { startingTps: 30000, finishingTps: 40000 } }
+      workload:
+        module: ./add.js
+    - label: mul
+      txNumber: 100000
+      rateControl: { type: 'linear-rate', opts: { startingTps: 30000, finishingTps: 40000 } }
+      workload:
+        module: ./mul.js
+    - label: div
+      txNumber: 100000
+      rateControl: { type: 'linear-rate', opts: { startingTps: 30000, finishingTps: 40000 } }
+      workload:
+        module: ./div.js
+    - label: fib
+      txNumber: 100000
       rateControl: { type: 'linear-rate', opts: { startingTps: 30000, finishingTps: 40000 } }
       workload:
         module: ./get.js

@@ -31,9 +31,11 @@
         "@hyperledger/caliper-fabric": "0.4.2",
         "@hyperledger/caliper-fisco-bcos": "0.4.2",
         "@zan-san/caliper-dp-chain": "0.4.2",
+        "fabric-ca-client": "^2.2.3",
         "fabric-client": "^1.4.14",
-        "fabric-network": "^1.4.14",
-        "fabric-protos": "^2.0.0-snapshot.1",
+        "fabric-common": "^2.1.0",
+        "fabric-network": "^2.2.3",
+        "fabric-protos": "^2.1.0",
         "yargs": "15.3.1"
     },
     "devDependencies": {
