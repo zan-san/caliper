@@ -31,7 +31,7 @@ class HelloGetWorkload extends WorkloadModuleBase {
             contractName: 'DEMO1',
             functionName: 'get',
             args: payload,
-            readOnly: true
+            readOnly: false
         };
         await this.sutAdapter.sendRequests(args);
     }

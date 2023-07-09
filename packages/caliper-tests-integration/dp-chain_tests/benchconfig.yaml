@@ -16,7 +16,7 @@
 test:
     workers:
         type: local
-        number: 1
+        number: 4
     rounds:
     - label: set
       txNumber: 10000
@@ -24,27 +24,27 @@ test:
       workload:
         module: ./set.js
     - label: get
-      txNumber: 100000
-      rateControl: { type: 'linear-rate', opts: { startingTps: 30000, finishingTps: 40000 } }
+      txNumber: 50000
+      rateControl: { type: 'linear-rate', opts: { startingTps: 2000, finishingTps: 10000 } }
       workload:
         module: ./get.js
-    - label: add
-      txNumber: 100000
-      rateControl: { type: 'linear-rate', opts: { startingTps: 30000, finishingTps: 40000 } }
-      workload:
-        module: ./add.js
-    - label: mul
-      txNumber: 100000
-      rateControl: { type: 'linear-rate', opts: { startingTps: 30000, finishingTps: 40000 } }
-      workload:
-        module: ./mul.js
-    - label: div
-      txNumber: 100000
-      rateControl: { type: 'linear-rate', opts: { startingTps: 30000, finishingTps: 40000 } }
-      workload:
-        module: ./div.js
-    - label: fib
-      txNumber: 100000
-      rateControl: { type: 'linear-rate', opts: { startingTps: 30000, finishingTps: 40000 } }
-      workload:
-        module: ./get.js
+    # - label: add
+    #   txNumber: 100000
+    #   rateControl: { type: 'linear-rate', opts: { startingTps: 30000, finishingTps: 40000 } }
+    #   workload:
+    #     module: ./add.js
+    # - label: mul
+    #   txNumber: 100000
+    #   rateControl: { type: 'linear-rate', opts: { startingTps: 30000, finishingTps: 40000 } }
+    #   workload:
+    #     module: ./mul.js
+    # - label: div
+    #   txNumber: 100000
+    #   rateControl: { type: 'linear-rate', opts: { startingTps: 30000, finishingTps: 40000 } }
+    #   workload:
+    #     module: ./div.js
+    # - label: fib
+    #   txNumber: 100000
+    #   rateControl: { type: 'linear-rate', opts: { startingTps: 30000, finishingTps: 40000 } }
+    #   workload:
+    #     module: ./get.js

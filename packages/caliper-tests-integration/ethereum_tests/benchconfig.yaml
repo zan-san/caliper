@@ -20,7 +20,7 @@ params:
 test:
     workers:
         type: local
-        number: 16
+        number: 2
     rounds:
     - label: open
       txNumber: *accounts

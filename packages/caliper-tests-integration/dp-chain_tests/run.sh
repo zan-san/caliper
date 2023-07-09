@@ -74,7 +74,8 @@ node caliper.js launch manager \
 node caliper.js launch manager \
 --caliper-workspace ~/caliper/packages/caliper-tests-integration/ethereum_tests \
 --caliper-benchconfig ~/caliper/packages/caliper-tests-integration/ethereum_tests/benchconfig.yaml \
---caliper-networkconfig ~/caliper/packages/caliper-tests-integration/ethereum_tests/networkconfig.json
+--caliper-networkconfig ~/caliper/packages/caliper-tests-integration/ethereum_tests/networkconfig.json \
+--caliper-flow-only-test 
 
 node caliper.js launch manager \
 --caliper-workspace ~/caliper/packages/caliper-tests-integration/fisco-bcos_tests \

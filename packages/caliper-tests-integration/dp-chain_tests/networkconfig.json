@@ -2,8 +2,8 @@
     "caliper": {
         "blockchain": "dp-chain",
         "command": {
-            "start": "docker-compose -f config/docker-compose.yaml up -d; sleep 40s",
-            "end": "docker-compose -f config/docker-compose.yaml down"
+            "start": "docker-compose -f config_4/docker-compose.yaml up -d; sleep 40s",
+            "end": "docker-compose -f config_4/docker-compose.yaml down"
         }
     },
     "dp-chain": {
@@ -36,7 +36,7 @@
     },
     "info": {
         "Version": "2.0.0",
-        "Size": "4 Nodes",
+        "Size": "16 Nodes",
         "Distribution": "Single Host"
     }
 }
